@@ -1,13 +1,13 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 dotenv.config();
-import {connection} from './config/db.js'
-import './config/install.js'
+import { connection } from "./config/db.js";
+import "./config/install.js";
 //import { upload} from './config/multer.js'
 
-// routing 
-import usersRouter from "./api/users/users.route.js"
+// routing
+import usersRouter from "./api/users/users.route.js";
 import answersRouter from "./api/answers/answers.route.js";
 import questionsRouter from "./api/questions/questions.route.js";
 import replaysRouter from "./api/replays/replays.route.js";
@@ -18,19 +18,23 @@ import reactionsRouter from "./api/reactions/reactions.route.js";
 const port = process.env.SERVER_PORT;
 const host = process.env.SERVER_HOST;
 
-
-
 const server = express();
 
 //middleware
-server.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests from any origin
-        callback(null, true);
-    },
-    credentials: true // Allow credentials (cookies) to be sent
-}));
+// server.use(cors({
+//     origin: (origin, callback) => {
+//         // Allow requests from any origin
+//         callback(null, true);
+//     },
+//     credentials: true // Allow credentials (cookies) to be sent
+// }));
 
+server.use(
+	cors({
+		origin: "https://evangadi-forum-ermi.netlify.app/",
+		credentials: true, // Allow credentials (cookies) to be sent
+	})
+);
 
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
@@ -42,14 +46,11 @@ server.use("/api/questions", questionsRouter);
 server.use("/api/replays", replaysRouter);
 server.use("/api/reactions", reactionsRouter);
 
-server.get('/', (req, res) => { 
-    res.send(`<h1>working ... </h1>`);
+server.get("/", (req, res) => {
+	res.send(`<h1>working ... </h1>`);
 });
 
-
-
-
-server.listen(port, (error) => { 
-    if (error) console.log(error);
-    console.log(`http://${host}:${[port]}`);
+server.listen(port, (error) => {
+	if (error) console.log(error);
+	console.log(`http://${host}:${[port]}`);
 });
